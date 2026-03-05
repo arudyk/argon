@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Map</title>
+  <script src="/assets/maplibre-gl.js"></script>
+  <link rel="stylesheet" href="/assets/maplibre-gl.css">
+  <script src="/assets/pmtiles.js"></script>
+  <script src="/assets/basemaps.js"></script>
+  <script src="/assets/maplibre-gl-geocoder.js"></script>
+  <link rel="stylesheet" href="/assets/maplibre-gl-geocoder.css">
+  <style>
+    body { margin: 0; }
+    #map { width: 100vw; height: 100vh; }
+    #region-ctrl {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+      display: flex;
+      overflow: hidden;
+    }
+    #region-ctrl button {
+      border: none;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background: white;
+      color: #333;
+    }
+    #region-ctrl button.active {
+      background: #404040;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="region-ctrl">
+    <button id="btn-us" class="active" onclick="setRegion('us')">🇺🇸 US</button>
+    <button id="btn-europe" onclick="setRegion('europe')">🇪🇺 Europe</button>
+  </div>
+  <script>
+    const protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
+
+    const regions = {
+      us:     { url: `pmtiles://${location.origin}/tiles/us.pmtiles`,     center: [-98.5, 39.5], zoom: 4 },
+      europe: { url: `pmtiles://${location.origin}/tiles/europe.pmtiles`, center: [10, 50],      zoom: 4 }
+    };
+
+    function makeStyle(pmtilesUrl) {
+      return {
+        version: 8,
+        glyphs: `${location.origin}/fonts/{fontstack}/{range}.pbf`,
+        sprite: `${location.origin}/sprites/v4/light`,
+        sources: {
+          protomaps: {
+            type: "vector",
+            url: pmtilesUrl,
+            attribution: '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>'
+          }
+        },
+        layers: basemaps.layers("protomaps", basemaps.namedFlavor("light"), { lang: "en" })
+      };
+    }
+
+    const map = new maplibregl.Map({
+      container: "map",
+      style: makeStyle(regions.us.url),
+      center: regions.us.center,
+      zoom: regions.us.zoom
+    });
+
+    function setRegion(region) {
+      const r = regions[region];
+      document.getElementById("btn-us").classList.toggle("active", region === "us");
+      document.getElementById("btn-europe").classList.toggle("active", region === "europe");
+
+      // Update geocoder country filter
+      currentCountry = region === "us" ? "us" : null;
+
+      map.setStyle(makeStyle(r.url));
+
+      map.once("styledata", () => {
+        map.flyTo({ center: r.center, zoom: r.zoom });
+
+        if (!map.getSource("measure")) {
+          map.addSource("measure", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+          map.addLayer({ id: "measure-line", type: "line", source: "measure",
+            filter: ["==", "$type", "LineString"],
+            paint: { "line-color": "#e74c3c", "line-width": 2, "line-dasharray": [3, 2] } });
+          map.addLayer({ id: "measure-points", type: "circle", source: "measure",
+            filter: ["==", "$type", "Point"],
+            paint: { "circle-radius": 5, "circle-color": "#e74c3c", "circle-stroke-color": "#fff", "circle-stroke-width": 2 } });
+        }
+      });
+    }
+
+    map.addControl(new maplibregl.NavigationControl());
+
+    // --- Measure distance tool ---
+    let measureActive = false;
+    let measurePoints = [];
+    let measurePopups = [];
+
+    function haversine(p1, p2) {
+      const R = 3958.8;
+      const dLat = (p2[1] - p1[1]) * Math.PI / 180;
+      const dLon = (p2[0] - p1[0]) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(p1[1] * Math.PI / 180) * Math.cos(p2[1] * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function updateMeasureLayers() {
+      const features = measurePoints.map(p => ({ type: "Feature", geometry: { type: "Point", coordinates: p } }));
+      if (measurePoints.length > 1)
+        features.push({ type: "Feature", geometry: { type: "LineString", coordinates: measurePoints } });
+      map.getSource("measure")?.setData({ type: "FeatureCollection", features });
+    }
+
+    function clearMeasure() {
+      measurePoints = [];
+      measurePopups.forEach(p => p.remove());
+      measurePopups = [];
+      updateMeasureLayers();
+    }
+
+    map.on("load", () => {
+      map.addSource("measure", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      map.addLayer({ id: "measure-line", type: "line", source: "measure",
+        filter: ["==", "$type", "LineString"],
+        paint: { "line-color": "#e74c3c", "line-width": 2, "line-dasharray": [3, 2] } });
+      map.addLayer({ id: "measure-points", type: "circle", source: "measure",
+        filter: ["==", "$type", "Point"],
+        paint: { "circle-radius": 5, "circle-color": "#e74c3c", "circle-stroke-color": "#fff", "circle-stroke-width": 2 } });
+    });
+
+    map.on("click", (e) => {
+      if (!measureActive) return;
+      const pt = [e.lngLat.lng, e.lngLat.lat];
+      measurePoints.push(pt);
+      updateMeasureLayers();
+
+      let html;
+      if (measurePoints.length === 1) {
+        html = "<b>Start point</b>";
+      } else {
+        const seg = haversine(measurePoints[measurePoints.length - 2], pt);
+        const total = measurePoints.reduce((s, p, i) => i === 0 ? 0 : s + haversine(measurePoints[i - 1], p), 0);
+        html = `+${seg.toFixed(2)} mi<br><b>Total: ${total.toFixed(2)} mi</b>`;
+      }
+
+      const popup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 8 })
+        .setLngLat(e.lngLat)
+        .setHTML(`<div style="font-size:12px;font-family:sans-serif;line-height:1.5">${html}</div>`)
+        .addTo(map);
+      measurePopups.push(popup);
+    });
+
+    class MeasureControl {
+      onAdd(map) {
+        this._container = document.createElement("div");
+        this._container.className = "maplibregl-ctrl maplibregl-ctrl-group";
+        this._btn = document.createElement("button");
+        this._btn.title = "Measure distance (click points, click button again to stop & clear)";
+        this._btn.style.cssText = "font-size:15px;cursor:pointer;width:30px;height:30px";
+        this._btn.textContent = "📏";
+        this._btn.onclick = () => {
+          measureActive = !measureActive;
+          this._btn.style.background = measureActive ? "#ffd0cc" : "";
+          map.getCanvas().style.cursor = measureActive ? "crosshair" : "";
+          if (!measureActive) clearMeasure();
+        };
+        this._container.appendChild(this._btn);
+        return this._container;
+      }
+      onRemove() { this._container.parentNode.removeChild(this._container); }
+    }
+    map.addControl(new MeasureControl(), "top-right");
+
+    map.on("contextmenu", (e) => {
+      const { lat, lng } = e.lngLat;
+      const coords = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(`<div style="font-family:monospace;font-size:13px">
+            ${coords}
+            <button onclick="navigator.clipboard.writeText('${coords}')" style="margin-left:8px;cursor:pointer">Copy</button>
+          </div>`)
+        .addTo(map);
+    });
+
+    let currentCountry = "us";
+
+    const geocoder = new MaplibreGeocoder({
+      forwardGeocode: async (config) => {
+        const cc = currentCountry ? `&countrycodes=${currentCountry}` : "";
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(config.query)}&format=geojson&addressdetails=1&limit=5${cc}`
+        );
+        const data = await res.json();
+        return {
+          features: data.features.map(f => ({
+            type: "Feature",
+            geometry: f.geometry,
+            place_name: f.properties.display_name,
+            center: f.geometry.coordinates
+          }))
+        };
+      }
+    }, { maplibregl });
+    map.addControl(geocoder, "top-left");
+  </script>
+</body>
+</html>

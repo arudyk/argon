@@ -1,0 +1,10 @@
+{
+    debug
+}
+
+home.rudyk.me {
+    log {
+        output stderr
+    }
+    reverse_proxy host.docker.internal:8123
+}

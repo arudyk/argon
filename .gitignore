@@ -1,0 +1,6 @@
+.env
+.env.argon
+data/
+map/assets/
+map/fonts/
+map/sprites/
