@@ -34,3 +34,27 @@ rsync -avz --exclude "deploy.sh" --exclude ".git" --exclude ".env" \
 ssh "${REMOTE}" "cp ${REMOTE_DIR}/.env.argon ${REMOTE_DIR}/.env"
 
 echo "Deployed to ${REMOTE}:${REMOTE_DIR}"
+
+# Deploy Sentinel HA integration from the sentinel repo (non-fatal — warns on failure)
+deploy_sentinel() {
+  echo "Pulling latest Sentinel HA integration..."
+  local tmp
+  tmp=$(mktemp -d)
+  git clone --depth=1 git@github.com:arudyk/sentinel.git "$tmp"
+
+  ssh "${REMOTE}" "mkdir -p ${REMOTE_DIR}/data/homeassistant/custom_components ${REMOTE_DIR}/data/homeassistant/www"
+
+  rsync -avz "$tmp/ha-integration/custom_components/sentinel/" \
+    "${REMOTE}:${REMOTE_DIR}/data/homeassistant/custom_components/sentinel/"
+
+  rsync -avz "$tmp/ha-integration/www/sentinel-card.js" \
+    "${REMOTE}:${REMOTE_DIR}/data/homeassistant/www/"
+
+  rm -rf "$tmp"
+
+  echo "Sentinel integration deployed — restarting Home Assistant..."
+  ssh "${REMOTE}" "cd ${REMOTE_DIR} && docker compose restart homeassistant"
+  echo "Home Assistant restarted."
+}
+
+deploy_sentinel || echo "WARNING: Sentinel integration deploy failed — skipping."
