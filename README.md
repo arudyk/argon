@@ -11,6 +11,7 @@ Home server stack running on a Raspberry Pi. All services are managed with Docke
 | [Z-Wave JS UI](#z-wave-js-ui) | 8091, 3000 | Z-Wave device management |
 | [Caddy](#caddy) | 80, 443 | HTTPS reverse proxy |
 | [GMC-300](#gmc-300) | — | Geiger counter → Home Assistant |
+| [Sentinel](#sentinel) | — | Home sentry robot → Home Assistant |
 | [Kiwix](#kiwix) | 8888 | Offline Wikipedia |
 | [Maps](#maps) | 8090 | Offline OpenStreetMap viewer |
 | [Plex](#plex) | 32400 (host) | Media server |
@@ -52,6 +53,16 @@ Custom container that reads radiation data from a [GQ GMC-300/320](https://www.g
 Source in `gmc300/`. The C binary (`gmc320`) reads a single measurement from the device and outputs JSON. `run.sh` loops this and POSTs to the HA states API.
 
 Requires a long-lived access token from Home Assistant (`HA_TOKEN`).
+
+### Sentinel
+
+Home sentry robot integration. Source: [github.com/arudyk/sentinel](https://github.com/arudyk/sentinel).
+
+`deploy.sh` automatically pulls the latest code from the sentinel repo and installs:
+- `data/homeassistant/custom_components/sentinel/` — HA custom integration (camera, drive buttons, battery sensors, speed control)
+- `data/homeassistant/www/sentinel-card.js` — Lovelace card with live camera feed and D-pad controls
+
+After deploy, Home Assistant is restarted to pick up any integration changes. To add the robot to HA for the first time, go to **Settings → Devices & Services → Add Integration** and search for **Sentinel**, then enter the robot's IP and port (default `8080`).
 
 ### Kiwix
 
@@ -126,6 +137,8 @@ cp .env.example .env.argon   # fill in secrets
 2. Download Protomaps fonts and sprites if missing
 3. `rsync` the project to the Pi
 4. Copy `.env.argon` → `.env` on the remote
+5. Pull the latest Sentinel HA integration from its repo and deploy to `data/homeassistant/`
+6. Restart Home Assistant
 
 The Pi address and remote directory are configured at the top of `deploy.sh`.
 
