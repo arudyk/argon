@@ -24,7 +24,7 @@ services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     container_name: homeassistant
-    restart: unless-stopped
+    restart: on-failure:10
     network_mode: host
     privileged: true
     environment:
@@ -37,7 +37,7 @@ services:
   zwave-js-ui:
     image: zwavejs/zwave-js-ui:latest
     container_name: zwave-js-ui
-    restart: unless-stopped
+    restart: on-failure:10
     ports:
       - "8091:8091"
       - "3000:3000"
@@ -69,7 +69,7 @@ services:
   gmc300:
     build: ./gmc300
     container_name: gmc300
-    restart: unless-stopped
+    restart: on-failure:10
     environment:
       PORT: "/dev/ttyUSB0"
       BAUDRATE: "115200"
@@ -104,7 +104,7 @@ services:
   plex:
     image: plexinc/pms-docker:latest
     container_name: plex
-    restart: unless-stopped
+    restart: on-failure:10
     network_mode: host
     environment:
       TZ: "America/New_York"

@@ -112,7 +112,7 @@ float gmc_get_temperature(int device) {
 	char cmd[] = "<GETTEMP>>";
 	char buf[4] = { 0 };
 
-	gmc_flush(serial_port);
+	gmc_flush(device);
 	if (gmc_write(device, cmd) == (ssize_t) strlen(cmd)) {
 		gmc_read(device, buf, 4);
 	} else
