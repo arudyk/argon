@@ -131,3 +131,57 @@ services:
                curl -s \"https://dynamicdns.park-your-domain.com/update?host=$$DDNS_HOST&domain=$$DDNS_DOMAIN&password=$$DDNS_PASSWORD&ip=$$MY_PUBLIC_IP\";
                sleep 1800;
              done"
+
+  hermes:
+    image: nousresearch/hermes-agent:latest
+    container_name: hermes
+    restart: unless-stopped
+    command: gateway run
+    ports:
+      - "192.168.1.137:9119:9119"
+    environment:
+      HERMES_UID: "1000"
+      HERMES_GID: "1000"
+      HERMES_DASHBOARD: "1"
+    volumes:
+      - /home/andriy/Hermes:/opt/data
+
+  openviking:
+    image: ghcr.io/volcengine/openviking:latest
+    container_name: openviking
+    restart: unless-stopped
+    ports:
+      - "192.168.1.137:1933:1933"
+    environment:
+      # Serve the API + Web Studio only; no bundled VikingBot gateway.
+      OPENVIKING_WITH_BOT: "0"
+      # Written to /app/.openviking/ov.conf on start. Secrets come from .env.
+      OPENVIKING_CONF_CONTENT: |
+        {
+          "service_name": "openviking-server",
+          "server": { "host": "0.0.0.0", "port": 1933, "auth_mode": "trusted", "root_api_key": "${OPENVIKING_ROOT_API_KEY}" },
+          "storage": {
+            "workspace": "./data",
+            "vectordb": { "name": "context", "backend": "local" },
+            "agfs": { "backend": "local" }
+          },
+          "embedding": {
+            "dense": {
+              "provider": "openai",
+              "api_base": "https://openrouter.ai/api/v1",
+              "api_key": "${OPENROUTER_API_KEY}",
+              "model": "${OPENVIKING_EMBEDDING_MODEL:-openai/text-embedding-3-small}",
+              "dimension": 1536,
+              "encoding_format": "float"
+            }
+          },
+          "vlm": {
+            "provider": "openai",
+            "api_base": "https://openrouter.ai/api/v1",
+            "api_key": "${OPENROUTER_API_KEY}",
+            "model": "${OPENVIKING_VLM_MODEL:-qwen/qwen3.7-flash}",
+            "timeout": 600
+          }
+        }
+    volumes:
+      - ./data/openviking:/app/.openviking

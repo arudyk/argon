@@ -16,6 +16,8 @@ Home server stack running on a Raspberry Pi. All services are managed with Docke
 | [Maps](#maps) | 8090 | Offline OpenStreetMap viewer |
 | [Plex](#plex) | 32400 (host) | Media server |
 | [DDNS](#ddns) | — | Dynamic DNS updater |
+| [Hermes](#hermes) | 9119 (LAN only) | Hermes Agent gateway and web dashboard |
+| [OpenViking](#openviking) | 1933 (LAN only) | Shared long-term memory for Hermes |
 
 ---
 
@@ -113,6 +115,65 @@ ssh -L 32400:localhost:32400 user@<host>
 ### DDNS
 
 Lightweight Alpine container that updates a [Namecheap Dynamic DNS](https://www.namecheap.com/support/knowledgebase/article.aspx/29/11/how-to-dynamically-update-the-hosts-ip-with-an-a-record/) A record every 30 minutes with the server's current public IP.
+
+### Hermes
+
+[Hermes Agent](https://github.com/NousResearch/hermes-agent) gateway with its web dashboard.
+
+The dashboard is at `http://192.168.1.137:9119` and is reachable from the LAN only. The port is bound to the Pi's LAN IPv4 address, so Docker doesn't publish it on the Pi's public IPv6 addresses, and the router forwards nothing to it. Chat platforms such as Telegram need no inbound access, because the gateway polls them with outbound requests.
+
+All Hermes state lives outside this repo in `/home/andriy/Hermes` on the Pi, mounted at `/opt/data`: `.env` (API keys), `config.yaml`, sessions, memories, and skills.
+
+First-time setup on the Pi, for the model provider and API keys:
+
+```bash
+docker run -it --rm -e HERMES_UID=1000 -e HERMES_GID=1000 \
+  -v /home/andriy/Hermes:/opt/data nousresearch/hermes-agent setup
+```
+
+The dashboard refuses to start until a login is configured. Hermes' username/password provider fits a trusted network. Add these to `/home/andriy/Hermes/.env`:
+
+```bash
+HERMES_DASHBOARD_BASIC_AUTH_USERNAME=your_username
+HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=your_password
+# Keeps sessions valid across restarts (generate with: openssl rand -base64 32)
+HERMES_DASHBOARD_BASIC_AUTH_SECRET=your_signing_secret
+```
+
+See the [dashboard authentication docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-dashboard#authentication-gated-mode) for the other providers.
+
+### OpenViking
+
+Self-hosted [OpenViking](https://openviking.ai) context database — long-term memory for Hermes, shared by every machine that points at it (the Pi gateway and the desktop). It stores memories as a browsable `viking://` filesystem with tiered retrieval instead of an opaque vector store.
+
+- Web Studio: `http://192.168.1.137:1933/studio` (API on the same port, LAN only)
+- Data persisted in `data/openviking/` (config, workspace, vector index)
+- Embeddings and VLM memory extraction run through OpenRouter (`OPENROUTER_API_KEY`). Override the models with `OPENVIKING_EMBEDDING_MODEL` (dimension is fixed at 1536) and `OPENVIKING_VLM_MODEL`.
+- Server config is generated from `OPENVIKING_CONF_CONTENT` in `docker-compose.yml`, with secrets pulled from `.env`. The entrypoint writes `ov.conf` only if it does not already exist, so to apply a config change: edit compose, then delete the file and recreate the container — `rm data/openviking/ov.conf && docker compose up -d --force-recreate openviking`.
+
+To point a Hermes instance at it, add to that profile's `.env`:
+
+```bash
+OPENVIKING_ENDPOINT=http://192.168.1.137:1933   # use http://openviking:1933 inside the compose network
+OPENVIKING_API_KEY=<value of OPENVIKING_ROOT_API_KEY>
+OPENVIKING_ACCOUNT=default
+OPENVIKING_USER=default
+```
+
+then install and enable the provider:
+
+```bash
+hermes plugins install openviking
+hermes config set memory.provider openviking
+```
+
+Management:
+
+```bash
+docker compose up -d openviking   # start
+docker logs -f openviking         # logs
+curl -s http://192.168.1.137:1933/health   # health check
+```
 
 ---
 
