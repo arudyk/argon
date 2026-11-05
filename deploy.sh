@@ -58,3 +58,20 @@ deploy_sentinel() {
 }
 
 deploy_sentinel || echo "WARNING: Sentinel integration deploy failed — skipping."
+
+IOS_THEMES_COMMIT="8c21d38f55cb07b193e42afeaf417db5cd42c247"
+
+seed_homeassistant() {
+  echo "Seeding Home Assistant theme, dashboard and automations..."
+  ssh "${REMOTE}" "mkdir -p ${REMOTE_DIR}/data/homeassistant/themes && \
+    [ -f ${REMOTE_DIR}/data/homeassistant/themes/ios-themes.yaml ] || \
+    curl -sfL -o ${REMOTE_DIR}/data/homeassistant/themes/ios-themes.yaml \
+      https://raw.githubusercontent.com/basnijholt/lovelace-ios-themes/${IOS_THEMES_COMMIT}/themes/ios-themes.yaml"
+
+  ssh "${REMOTE}" "cd ${REMOTE_DIR} && set -a && . ./.env && \
+    docker cp homeassistant homeassistant:/tmp/argon-seed && \
+    docker exec -e HA_TOKEN=\"\$GMC300_HA_TOKEN\" homeassistant python3 /tmp/argon-seed/seed.py /tmp/argon-seed; \
+    status=\$?; docker exec homeassistant rm -rf /tmp/argon-seed; exit \$status"
+}
+
+seed_homeassistant || echo "WARNING: Home Assistant seeding failed — skipping."

@@ -1,0 +1,118 @@
+[
+  {
+    "id": "yard_person_detected",
+    "alias": "Cameras - Person in front yard or backyard",
+    "triggers": [
+      {
+        "platform": "state",
+        "entity_id": [
+          "event.front_yard_camera_motion",
+          "event.backyard_camera_motion"
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "condition": "template",
+        "value_template": "{{ trigger.to_state.attributes.event_type == 'camera_person' }}"
+      }
+    ],
+    "actions": [
+      {
+        "action": "notify.mobile_app_jarvis",
+        "data": {
+          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}"
+        }
+      },
+      {
+        "action": "notify.mobile_app_micro_peach",
+        "data": {
+          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}"
+        }
+      },
+      {
+        "delay": "00:02:00"
+      }
+    ],
+    "mode": "single",
+    "max_exceeded": "silent"
+  },
+  {
+    "id": "vacuum_morty_daily",
+    "alias": "Cleaning - Morty daily 08:00 (downstairs)",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "08:00:00"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "select.select_option",
+        "target": {
+          "entity_id": "select.morty_cleaning_mode"
+        },
+        "data": {
+          "option": "vac_and_mop"
+        }
+      },
+      {
+        "action": "vacuum.start",
+        "target": {
+          "entity_id": "vacuum.morty"
+        }
+      }
+    ],
+    "mode": "single"
+  },
+  {
+    "id": "vacuum_rick_daily",
+    "alias": "Cleaning - Rick daily 17:00 (upstairs)",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "17:00:00"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "select.select_option",
+        "target": {
+          "entity_id": "select.rick_cleaning_mode"
+        },
+        "data": {
+          "option": "vac_and_mop"
+        }
+      },
+      {
+        "action": "vacuum.start",
+        "target": {
+          "entity_id": "vacuum.rick"
+        }
+      }
+    ],
+    "mode": "single"
+  },
+  {
+    "id": "vacuum_jerry_daily",
+    "alias": "Cleaning - Jerry daily 21:00 (garage)",
+    "triggers": [
+      {
+        "trigger": "time",
+        "at": "21:00:00"
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "action": "vacuum.start",
+        "target": {
+          "entity_id": "vacuum.jerry"
+        }
+      }
+    ],
+    "mode": "single"
+  }
+]
