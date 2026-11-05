@@ -572,6 +572,220 @@
       ]
     },
     {
+      "title": "Automations",
+      "path": "automations",
+      "icon": "mdi:calendar-clock",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Schedules",
+              "icon": "mdi:clock-outline"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_morty_daily_08_00_downstairs",
+              "name": "Morty, daily 08:00",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_rick_daily_17_00_upstairs",
+              "name": "Rick, daily 17:00",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_jerry_daily_21_00_garage",
+              "name": "Jerry, daily 21:00",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_lock_frontdoor",
+              "name": "Lock doors at 23:00",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_enable_outside_lights",
+              "name": "Outside lights on at sunset",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_disable_garage_lights",
+              "name": "Garage lights off at sunrise",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.notification_full_moon_alert",
+              "name": "Full moon alert at 17:00",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Alerts",
+              "icon": "mdi:bell-alert"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cameras_person_in_front_yard_or_backyard",
+              "name": "Person in front yard or backyard",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.radiation_elevated_alert_100_cpm",
+              "name": "Radiation over 100 CPM",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.radiation_dangerous_alert_1000_cpm",
+              "name": "Radiation over 1000 CPM",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.notify_sentinel_low_battery",
+              "name": "Sentinel battery low",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garage relays",
+              "icon": "mdi:garage"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.left_garage_door_reset",
+              "name": "Left door button reset",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "automation.right_garage_door_reset",
+              "name": "Right door button reset",
+              "state_content": [
+                "state",
+                "last_triggered"
+              ],
+              "grid_options": {
+                "columns": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Edit",
+              "icon": "mdi:pencil"
+            },
+            {
+              "type": "button",
+              "name": "Edit automations",
+              "icon": "mdi:robot",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/config/automation/dashboard"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "title": "Sensors",
       "path": "sensors",
       "icon": "mdi:chart-line",
