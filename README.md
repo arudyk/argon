@@ -33,6 +33,16 @@ Home automation platform. Runs with `network_mode: host` and `privileged: true` 
 
 Config persisted in `data/homeassistant/`.
 
+`deploy.sh` seeds the parts of the HA setup that live in `homeassistant/`, so a fresh install gets them back:
+
+- The tabbed **Home** dashboard (`dashboard-home.json`), set as the default dashboard
+- The [iOS Themes](https://github.com/basnijholt/lovelace-ios-themes) theme file, pinned to a commit, with `ios-dark-mode-dark-blue` as the default theme
+- The automations in `automations.json`: the front yard and backyard person alert, and the daily vacuum schedules
+
+Seeding only creates what is missing. It never overwrites a dashboard, theme setting, or automation that already exists, so edits made in the HA UI survive later deploys. To capture those edits in the repo, export them back into the JSON files. `seed.py` runs inside the `homeassistant` container and authenticates with `GMC300_HA_TOKEN`, which must belong to an HA admin user.
+
+Integrations that need a sign-in (Nest, Roborock, Roomba) are not seeded. Add them in the HA UI after a reinstall; the dashboard and automations pick up their entities once they exist.
+
 ### Z-Wave JS UI
 
 Web UI and WebSocket server for the Z-Wave USB stick. Provides the Z-Wave JS integration used by Home Assistant.

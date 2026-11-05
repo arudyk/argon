@@ -1,0 +1,1017 @@
+{
+  "title": "Home",
+  "views": [
+    {
+      "title": "Home",
+      "path": "home",
+      "icon": "mdi:home",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Now",
+              "icon": "mdi:weather-partly-cloudy"
+            },
+            {
+              "type": "weather-forecast",
+              "entity": "weather.forecast_home",
+              "forecast_type": "daily"
+            },
+            {
+              "type": "tile",
+              "entity": "device_tracker.jarvis"
+            },
+            {
+              "type": "tile",
+              "entity": "device_tracker.micro_peach"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.radiation"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.moon_phase"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Doors",
+              "icon": "mdi:door"
+            },
+            {
+              "type": "tile",
+              "entity": "lock.front_door_lock",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "lock.backdoor",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_1"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_2"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Front door",
+              "icon": "mdi:doorbell-video"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.front_door_doorbell",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Vacuums",
+              "icon": "mdi:robot-vacuum"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.morty",
+              "name": "Morty (downstairs)"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.rick",
+              "name": "Rick (upstairs)"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.jerry",
+              "name": "Jerry (garage)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Security",
+      "path": "security",
+      "icon": "mdi:shield-home",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Front door",
+              "icon": "mdi:door"
+            },
+            {
+              "type": "tile",
+              "entity": "lock.front_door_lock",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.front_door_lock_current_status_of_the_door"
+            },
+            {
+              "type": "tile",
+              "entity": "select.front_door_lock_current_lock_mode"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.front_door_lock_lock_jammed"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Back door",
+              "icon": "mdi:door"
+            },
+            {
+              "type": "tile",
+              "entity": "lock.backdoor",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.backdoor_current_status_of_the_door"
+            },
+            {
+              "type": "tile",
+              "entity": "select.backdoor_current_lock_mode"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.backdoor_lock_jammed"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garage",
+              "icon": "mdi:garage"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_1"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_2"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_outside_lights"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Fire & CO",
+              "icon": "mdi:smoke-detector"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.fire_alarm_smoke_detected"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.fire_alarm_carbon_monoxide_detected"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Automations",
+              "icon": "mdi:robot"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cameras_person_in_front_yard_or_backyard"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_lock_frontdoor"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_enable_outside_lights"
+            },
+            {
+              "type": "tile",
+              "entity": "automation.automatically_disable_garage_lights"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Front door",
+              "icon": "mdi:cctv"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.front_door_doorbell",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Front yard",
+              "icon": "mdi:cctv"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.front_yard_camera",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Backyard",
+              "icon": "mdi:cctv"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.backyard_camera",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garage",
+              "icon": "mdi:cctv"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.garage_camera",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Sunroom",
+              "icon": "mdi:cctv"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.sunroom_camera",
+              "camera_view": "live",
+              "show_state": false
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Sentinel",
+              "icon": "mdi:robot"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.sentinel_camera",
+              "camera_view": "auto",
+              "show_state": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Cleaning",
+      "path": "cleaning",
+      "icon": "mdi:robot-vacuum",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Morty (downstairs)",
+              "icon": "mdi:robot-vacuum"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.morty",
+              "features": [
+                {
+                  "type": "vacuum-commands",
+                  "commands": [
+                    "start_pause",
+                    "stop",
+                    "return_home"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_morty_daily_08_00_downstairs",
+              "name": "Daily at 08:00"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "select.morty_cleaning_mode"
+            },
+            {
+              "type": "tile",
+              "entity": "button.morty_empty_dustbin"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.morty_dust_collection"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.morty_do_not_disturb"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_cleaning_progress"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_cleaning_area"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_main_brush_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_side_brush_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_filter_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.morty_sensor_time_used"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Rick (upstairs)",
+              "icon": "mdi:robot-vacuum"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.rick",
+              "features": [
+                {
+                  "type": "vacuum-commands",
+                  "commands": [
+                    "start_pause",
+                    "stop",
+                    "return_home"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_rick_daily_17_00_upstairs",
+              "name": "Daily at 17:00"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "select.rick_cleaning_mode"
+            },
+            {
+              "type": "tile",
+              "entity": "button.rick_empty_dustbin"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.rick_dust_collection"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.rick_do_not_disturb"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_cleaning_progress"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_cleaning_area"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_main_brush_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_side_brush_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_filter_time_used"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.rick_sensor_time_used"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Jerry (garage)",
+              "icon": "mdi:robot-vacuum"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.jerry",
+              "features": [
+                {
+                  "type": "vacuum-commands",
+                  "commands": [
+                    "start_pause",
+                    "stop",
+                    "return_home"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "automation.cleaning_jerry_daily_21_00_garage",
+              "name": "Daily at 21:00"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jerry_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.jerry_charging"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.jerry_bin_full"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jerry_average_mission_time"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jerry_total_missions"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jerry_successful_missions"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jerry_failed_missions"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Sensors",
+      "path": "sensors",
+      "icon": "mdi:chart-line",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Radiation",
+              "icon": "mdi:radioactive"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.radiation"
+            },
+            {
+              "type": "history-graph",
+              "title": "Last 24 h",
+              "hours_to_show": 24,
+              "entities": [
+                "sensor.radiation"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Master bedroom",
+              "icon": "mdi:thermometer"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hub_2_b09d_temperature"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hub_2_b09d_humidity"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hub_2_b09d_illuminance"
+            },
+            {
+              "type": "history-graph",
+              "title": "Last 24 h",
+              "hours_to_show": 24,
+              "entities": [
+                "sensor.hub_2_b09d_temperature",
+                "sensor.hub_2_b09d_humidity"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Fire & CO",
+              "icon": "mdi:smoke-detector"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.fire_alarm_smoke_detected"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.fire_alarm_carbon_monoxide_detected"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Batteries",
+              "icon": "mdi:battery"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.front_door_lock_battery_level"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.backdoor_battery_level"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.left_curtain_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.right_curtain_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.sentinel_battery"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jarvis_battery_level"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.micro_peach_battery_level"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.micro_peach_watch_battery_level"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "System",
+      "path": "system",
+      "icon": "mdi:server",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Pi-hole",
+              "icon": "mdi:pi-hole"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.pi_hole"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.pi_hole_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.pi_hole_dns_queries"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.pi_hole_ads_blocked"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.pi_hole_ads_percentage_blocked"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.pi_hole_dns_unique_clients"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Backups",
+              "icon": "mdi:backup-restore"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.backup_backup_manager_state"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.backup_last_successful_automatic_backup"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.backup_next_scheduled_automatic_backup"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Z-Wave",
+              "icon": "mdi:z-wave"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.z_stick_gen5_usb_controller_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.front_door_lock_node_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.backdoor_node_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.garage_door_opener_node_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.fire_alarm_node_status"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.garage_outside_lights_node_status"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Phones",
+              "icon": "mdi:cellphone"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.jarvis_app_version"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.micro_peach_app_version"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Rooms",
+      "path": "rooms",
+      "icon": "mdi:floor-plan",
+      "type": "sections",
+      "max_columns": 4,
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Foyer",
+              "icon": "mdi:door"
+            },
+            {
+              "type": "tile",
+              "entity": "lock.front_door_lock",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_outside_lights"
+            },
+            {
+              "type": "tile",
+              "entity": "binary_sensor.fire_alarm_smoke_detected"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.sentinel_battery"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Kitchen",
+              "icon": "mdi:countertop"
+            },
+            {
+              "type": "tile",
+              "entity": "lock.backdoor",
+              "features": [
+                {
+                  "type": "lock-commands"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garage",
+              "icon": "mdi:garage"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_1"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.garage_door_opener_2"
+            },
+            {
+              "type": "tile",
+              "entity": "vacuum.jerry"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Living room",
+              "icon": "mdi:sofa"
+            },
+            {
+              "type": "tile",
+              "entity": "media_player.living_room"
+            },
+            {
+              "type": "tile",
+              "entity": "remote.living_room"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Master bedroom",
+              "icon": "mdi:bed-king"
+            },
+            {
+              "type": "tile",
+              "entity": "cover.left_curtain",
+              "features": [
+                {
+                  "type": "cover-open-close"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "cover.right_curtain",
+              "features": [
+                {
+                  "type": "cover-open-close"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hub_2_b09d_temperature"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hub_2_b09d_humidity"
+            },
+            {
+              "type": "tile",
+              "entity": "switch.watch_outlet"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Andriy office",
+              "icon": "mdi:printer"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hp_envy_6000_series"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hp_envy_6000_series_black_cartridge"
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.hp_envy_6000_series_tri_color_cartridge"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Sunroom",
+              "icon": "mdi:sofa-outline"
+            },
+            {
+              "type": "tile",
+              "entity": "camera.sunroom_camera"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Backyard",
+              "icon": "mdi:tree"
+            },
+            {
+              "type": "tile",
+              "entity": "camera.backyard_camera"
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Front yard",
+              "icon": "mdi:home-outline"
+            },
+            {
+              "type": "tile",
+              "entity": "camera.front_yard_camera"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
