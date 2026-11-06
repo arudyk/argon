@@ -21,13 +21,21 @@
       {
         "action": "notify.mobile_app_jarvis",
         "data": {
-          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}"
+          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}",
+          "data": {
+            "url": "/dashboard-home/security",
+            "clickAction": "/dashboard-home/security"
+          }
         }
       },
       {
         "action": "notify.mobile_app_micro_peach",
         "data": {
-          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}"
+          "message": "Person seen on {{ trigger.to_state.attributes.friendly_name | replace(' Motion', '') }}",
+          "data": {
+            "url": "/dashboard-home/security",
+            "clickAction": "/dashboard-home/security"
+          }
         }
       },
       {
